@@ -1,0 +1,31 @@
+{
+  "name": "angular-gsapify-router",
+  "version": "0.0.27",
+  "description": "Angular UI-Router animation directive allowing configuration of state transitions using GSAP",
+  "main": "angular-gsapify-router.js",
+  "ignore": [
+    "*",
+    "!angular-gsapify-router.js",
+    "!README.md"
+  ],
+  "dependencies": {
+    "angular": ">=1.2.0",
+    "angular-animate": ">=1.2.0",
+    "gsap": "~1.18.0",
+    "angular-ui-router": "~0.2.15"
+  },
+  "devDependencies": {
+    "mobile-angular-ui": "~1.2.0"
+  },
+  "homepage": "https://github.com/homerjam/angular-gsapify-router",
+  "_release": "0.0.27",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.0.27",
+    "commit": "1b842391ab5e4570e0a42a0504870aadb6a846dc"
+  },
+  "_source": "git://github.com/homerjam/angular-gsapify-router.git",
+  "_target": "~0.0.27",
+  "_originalSource": "angular-gsapify-router",
+  "_direct": true
+}

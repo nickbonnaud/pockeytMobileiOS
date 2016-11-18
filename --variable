@@ -1,0 +1,42 @@
+Fetching plugin "https://github.com/BranchMetrics/Cordova-Ionic-PhoneGap-Deferred-Deep-Linking-SDK.git" via git clone
+Repository "https://github.com/BranchMetrics/Cordova-Ionic-PhoneGap-Deferred-Deep-Linking-SDK.git" checked out to git ref "master".
+cp: dest file already exists: /Users/nickbonnaud/Desktop/com.pockeytFast/plugins/io.branch.sdk/CHANGELOG.md
+
+cp: dest file already exists: /Users/nickbonnaud/Desktop/com.pockeytFast/plugins/io.branch.sdk/CHANGELOG.md
+cp: dest file already exists: /Users/nickbonnaud/Desktop/com.pockeytFast/plugins/io.branch.sdk/ISSUE_TEMPLATE
+
+cp: dest file already exists: /Users/nickbonnaud/Desktop/com.pockeytFast/plugins/io.branch.sdk/CHANGELOG.md
+cp: dest file already exists: /Users/nickbonnaud/Desktop/com.pockeytFast/plugins/io.branch.sdk/ISSUE_TEMPLATE
+cp: dest file already exists: /Users/nickbonnaud/Desktop/com.pockeytFast/plugins/io.branch.sdk/LICENSE
+
+cp: dest file already exists: /Users/nickbonnaud/Desktop/com.pockeytFast/plugins/io.branch.sdk/CHANGELOG.md
+cp: dest file already exists: /Users/nickbonnaud/Desktop/com.pockeytFast/plugins/io.branch.sdk/ISSUE_TEMPLATE
+cp: dest file already exists: /Users/nickbonnaud/Desktop/com.pockeytFast/plugins/io.branch.sdk/LICENSE
+cp: dest file already exists: /Users/nickbonnaud/Desktop/com.pockeytFast/plugins/io.branch.sdk/README.md
+
+skipping existing file: afterPrepareHook.js
+skipping existing file: beforePluginInstallHook.js
+skipping existing file: iosBeforePrepareHook.js
+skipping existing file: manifestWriter.js
+skipping existing file: configXmlHelper.js
+skipping existing file: configXmlParser.js
+skipping existing file: projectEntitlements.js
+skipping existing file: xcodePreferences.js
+skipping existing file: xmlHelper.js
+cp: dest file already exists: /Users/nickbonnaud/Desktop/com.pockeytFast/plugins/io.branch.sdk/CHANGELOG.md
+cp: dest file already exists: /Users/nickbonnaud/Desktop/com.pockeytFast/plugins/io.branch.sdk/ISSUE_TEMPLATE
+cp: dest file already exists: /Users/nickbonnaud/Desktop/com.pockeytFast/plugins/io.branch.sdk/LICENSE
+cp: dest file already exists: /Users/nickbonnaud/Desktop/com.pockeytFast/plugins/io.branch.sdk/README.md
+cp: dest file already exists: /Users/nickbonnaud/Desktop/com.pockeytFast/plugins/io.branch.sdk/package.json
+
+cp: dest file already exists: /Users/nickbonnaud/Desktop/com.pockeytFast/plugins/io.branch.sdk/CHANGELOG.md
+cp: dest file already exists: /Users/nickbonnaud/Desktop/com.pockeytFast/plugins/io.branch.sdk/ISSUE_TEMPLATE
+cp: dest file already exists: /Users/nickbonnaud/Desktop/com.pockeytFast/plugins/io.branch.sdk/LICENSE
+cp: dest file already exists: /Users/nickbonnaud/Desktop/com.pockeytFast/plugins/io.branch.sdk/README.md
+cp: dest file already exists: /Users/nickbonnaud/Desktop/com.pockeytFast/plugins/io.branch.sdk/package.json
+cp: dest file already exists: /Users/nickbonnaud/Desktop/com.pockeytFast/plugins/io.branch.sdk/plugin.xml
+
+skipping existing file: BranchSDK.java
+skipping existing file: AppDelegate+BranchSdk.m
+skipping existing file: BranchSDK.h
+skipping existing file: BranchSDK.m
