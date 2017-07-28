@@ -7,7 +7,22 @@
         "files": {}
     },
     "installed_plugins": {
+        "com.phonegap.plugins.nativesettingsopener": {
+            "PACKAGE_NAME": "com.pockeyt"
+        },
+        "cordova-background-geolocation-lt": {
+            "BACKGROUND_MODE_LOCATION": "<string>location</string>",
+            "LOCATION_ALWAYS_USAGE_DESCRIPTION": "Background location-tracking is required",
+            "LOCATION_WHEN_IN_USE_USAGE_DESCRIPTION": "Background location-tracking is required",
+            "MOTION_USAGE_DESCRIPTION": "Using the accelerometer increases battery-efficiency by intelligently toggling location-tracking only when the device is detected to be moving",
+            "PACKAGE_NAME": "com.pockeyt"
+        },
+        "cordova-plugin-actionsheet": {
+            "PACKAGE_NAME": "com.pockeyt"
+        },
         "cordova-plugin-camera": {
+            "CAMERA_USAGE_DESCRIPTION": "Add profile picture to Pockeyt",
+            "PHOTOLIBRARY_USAGE_DESCRIPTION": "Choose profile picture for Pockeyt",
             "PACKAGE_NAME": "com.pockeyt"
         },
         "cordova-plugin-device": {
@@ -21,16 +36,13 @@
             "APP_NAME": "Pockeyt",
             "PACKAGE_NAME": "com.pockeyt"
         },
+        "cordova-plugin-file": {
+            "PACKAGE_NAME": "com.pockeyt"
+        },
         "cordova-plugin-file-transfer": {
             "PACKAGE_NAME": "com.pockeyt"
         },
-        "cordova-plugin-geolocation": {
-            "PACKAGE_NAME": "com.pockeyt"
-        },
         "cordova-plugin-google-analytics": {
-            "PACKAGE_NAME": "com.pockeyt"
-        },
-        "cordova-plugin-inappbrowser": {
             "PACKAGE_NAME": "com.pockeyt"
         },
         "cordova-plugin-spinner": {
@@ -51,9 +63,6 @@
         "cordova-plugin-x-toast": {
             "PACKAGE_NAME": "com.pockeyt"
         },
-        "cordova-universal-links-plugin": {
-            "PACKAGE_NAME": "com.pockeyt"
-        },
         "io.branch.sdk": {
             "BRANCH_KEY": "key_live_nfeWAeQnq5g7CFYAOpeK4mhkzDkzno9K",
             "URI_SCHEME": "com.pockeyt",
@@ -62,18 +71,22 @@
         "ionic-plugin-keyboard": {
             "PACKAGE_NAME": "com.pockeyt"
         },
-        "pushwoosh-cordova-plugin": {
+        "phonegap-plugin-push": {
+            "SENDER_ID": "906488292868",
             "PACKAGE_NAME": "com.pockeyt"
         },
-        "cordova-plugin-braintree": {
+        "cordova-plugin-inappbrowser": {
             "PACKAGE_NAME": "com.pockeyt"
         }
     },
     "dependent_plugins": {
-        "cordova-plugin-compat": {
+        "cordova-plugin-background-fetch": {
             "PACKAGE_NAME": "com.pockeyt"
         },
-        "cordova-plugin-file": {
+        "cordova-plugin-cocoalumberjack": {
+            "PACKAGE_NAME": "com.pockeyt"
+        },
+        "cordova-plugin-compat": {
             "PACKAGE_NAME": "com.pockeyt"
         },
         "es6-promise-plugin": {

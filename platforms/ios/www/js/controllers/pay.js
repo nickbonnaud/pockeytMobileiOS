@@ -5,41 +5,52 @@
   var PayController = function($scope, api) {
     if(typeof analytics !== "undefined") { analytics.trackView("Pay View"); }
 
-    $scope.openPayForm = function() {
-    	return api.request('/token/client')
-    		.then(function(response) {
-    			console.log(response.data.clientToken);
-    			var token = response.data.clientToken;
+    $scope.sendPaymentMethod = function() {
 
-    			BraintreePlugin.initialize(token,
-					  function () { console.log("init OK!"); },
-					  function (error) { console.error(error); 
-					});
+    };
 
-    			var options = {
-				    cancelText: "Cancel",
-				    title: "Add Card",
-				    ctaText: "ADD Payment Method",
-					};
+    $scope.focusField = function() {
+    	field.focus();
+    };
 
-    			BraintreePlugin.presentDropInPaymentUI(options, function (result) {
-						console.log('inside UI dropin');
-					    if (result.userCancelled) {
-					        console.debug("User cancelled payment dialog.");
-					    }
-					    else {
-					        console.info("User completed payment dialog.");
-					        console.info("Payment Nonce: " + result.nonce);
-					        console.debug("Payment Result.", result);
-					    }
-					});
+    const form = SecureForm.create('sandbox', function(state) {
+    	console.log(state);
+    });
 
-    		})
-    		.catch(function(response) {
-    			console.log(response);
-    		});
-		};
-		$scope.openPayForm();
+    form.field('#cc-number .fake-input', {
+		  type: 'card-number',
+		  name: 'number',
+		  successColor: 'green',
+		  errorColor: 'red',
+		  placeholder: '4111 1111 1111 1111',
+		  validations: ['required', 'validCardNumber'],
+		});
+
+		form.field('#cc-cvc .fake-input', {
+		  type: 'card-security-code',
+		  name: 'security_code',
+		  placeholder: '344',
+		  successColor: 'green',
+		  errorColor: 'red',
+		  validations: ['required', 'validCardSecurityCode'],
+		});
+
+		form.field('#cc-expiration-month .fake-input', {
+		  type: 'text',
+		  name: 'expiration_month',
+		  placeholder: '01',
+		  successColor: 'green',
+		  errorColor: 'red',
+		  validations: ['required']
+		});
+		form.field('#cc-expiration-year .fake-input', {
+		  type: 'text',
+		  name: 'expiration_year',
+		  placeholder: '2020',
+		  successColor: 'green',
+		  errorColor: 'red',
+		  validations: ['required']
+		});
   };
 
   module.controller('PayController', ['$scope', 'PockeytApi', PayController]);

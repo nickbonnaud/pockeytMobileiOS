@@ -255,7 +255,11 @@ static CFIndex WriteDataToStream(NSData* data, CFWriteStreamRef stream)
                         }
                     }
                 } else {
-                    WriteDataToStream(fileData, writeStream);
+                    if (totalPayloadLength > 0) {
+                        WriteDataToStream(fileData, writeStream);
+                    } else {
+                        NSLog(@"Uploading of an empty file is not supported for chunkedMode=true and multipart=false");
+                    }
                 }
             } else {
                 NSLog(@"FileTransfer: Failed to open writeStream");
@@ -281,6 +285,7 @@ static CFIndex WriteDataToStream(NSData* data, CFWriteStreamRef stream)
     NSString* server = [command argumentAtIndex:1];
     BOOL trustAllHosts = [[command argumentAtIndex:6 withDefault:[NSNumber numberWithBool:NO]] boolValue]; // allow self-signed certs
     NSString* objectId = [command argumentAtIndex:9];
+    BOOL chunkedMode = [[command argumentAtIndex:7 withDefault:[NSNumber numberWithBool:YES]] boolValue];
 
     CDVFileTransferDelegate* delegate = [[CDVFileTransferDelegate alloc] init];
 
@@ -292,6 +297,7 @@ static CFIndex WriteDataToStream(NSData* data, CFWriteStreamRef stream)
     delegate.target = server;
     delegate.trustAllHosts = trustAllHosts;
     delegate.filePlugin = [self.commandDelegate getCommandInstance:@"File"];
+    delegate.chunkedMode = chunkedMode;
 
     return delegate;
 }

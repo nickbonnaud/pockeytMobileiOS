@@ -19,7 +19,7 @@
 *
 */
 
-/* global exports, cordova, FileTransfer, FileTransferError, FileUploadOptions, LocalFileSystem */
+/* global exports, cordova, FileTransfer, FileTransferError, FileUploadOptions, LocalFileSystem, WinJS */
 
 /* jshint jasmine: true */
 
@@ -42,18 +42,23 @@ exports.defineAutoTests = function () {
     var DATA_URI_CONTENT = "iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==";
     var DATA_URI_CONTENT_LENGTH = 85; // bytes. (This is the raw file size: used https://en.wikipedia.org/wiki/File:Red-dot-5px.png from https://en.wikipedia.org/wiki/Data_URI_scheme)
 
-    // config for upload test server
+    // upload test server address
     // NOTE:
     //      more info at https://github.com/apache/cordova-labs/tree/cordova-filetransfer
-    var SERVER                  = "http://cordova-vm.apache.org:5000";
-    var SERVER_WITH_CREDENTIALS = "http://cordova_user:cordova_password@cordova-vm.apache.org:5000";
+    // Will get it from the config
+    // you can specify it as a 'FILETRANSFER_SERVER_ADDRESS' variable upon test plugin installation
+    // or change the default value in plugin.xml
+    var SERVER = "";
+    var SERVER_WITH_CREDENTIALS = "";
 
     // flags
     var isWindows = cordova.platformId === "windows8" || cordova.platformId === "windows";
+    var isWindowsPhone81 = isWindows && WinJS.Utilities.isPhone;
     var isWP8 = cordova.platformId === "windowsphone";
     var isBrowser = cordova.platformId === "browser";
     var isIE = isBrowser && navigator.userAgent.indexOf("Trident") >= 0;
     var isIos = cordova.platformId === "ios";
+    var isIot = cordova.platformId === "android" && navigator.userAgent.indexOf("iot") >= 0;
 
     // tests
     describe("FileTransferError", function () {
@@ -202,6 +207,11 @@ exports.defineAutoTests = function () {
             }
         };
 
+        var setServerAddress = function (address) {
+            SERVER = address;
+            SERVER_WITH_CREDENTIALS = SERVER.replace('http://', 'http://cordova_user:cordova_password@');
+        };
+
         // NOTE:
         //      there are several beforeEach calls, one per async call; since calling done()
         //      signifies a completed async call, each async call needs its own done(), and
@@ -263,6 +273,22 @@ exports.defineAutoTests = function () {
 
             if (expectedCallbacks.unsupportedOperation.calls.any()) {
                 pending();
+            }
+        });
+
+        it ("util spec: get file transfer server url", function () {
+            try {
+                // attempt to synchronously load medic config
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "../fileTransferOpts.json", false);
+                xhr.send(null);
+                var parsedCfg = JSON.parse(xhr.responseText);
+                if (parsedCfg.serverAddress) {
+                    setServerAddress(parsedCfg.serverAddress);
+                }
+            } catch (ex) {
+                console.error('Unable to load file transfer server url: ' + ex);
+                fail(ex);
             }
         });
 
@@ -784,9 +810,6 @@ exports.defineAutoTests = function () {
                         return;
                     }
 
-                    var imageURL = "http://apache.org/images/feather-small.gif";
-                    var lastModified = new Date();
-
                     var downloadFail = function (error) {
                         expect(error.http_status).toBe(304);
                         expect(error.code).toBe(FileTransferError.NOT_MODIFIED_ERR);
@@ -798,12 +821,7 @@ exports.defineAutoTests = function () {
                         done();
                     };
 
-                    this.transfer.download(imageURL + "?q=" + lastModified.getTime(), this.localFilePath, downloadWin, downloadFail, null,
-                        {
-                            headers: {
-                                "If-Modified-Since": lastModified.toUTCString()
-                            }
-                        });
+                    this.transfer.download(SERVER + '/304', this.localFilePath, downloadWin, downloadFail);
                 }, DOWNLOAD_TIMEOUT);
 
                 it("filetransfer.spec.35 304 should not result in the deletion of a cached file", function (done) {
@@ -813,8 +831,6 @@ exports.defineAutoTests = function () {
                         return;
                     }
 
-                    var imageURL = "http://apache.org/images/feather-small.gif";
-                    var lastModified = new Date();
                     var specContext = this;
 
                     var fileOperationFail = function() {
@@ -829,11 +845,6 @@ exports.defineAutoTests = function () {
 
                     var httpWin =  function() {
                         unexpectedCallbacks.httpWin();
-                        done();
-                    };
-
-                    var httpFail =  function() {
-                        unexpectedCallbacks.httpFail();
                         done();
                     };
 
@@ -869,17 +880,10 @@ exports.defineAutoTests = function () {
                         );
                     };
 
-                    // Adding parameters to the requests to avoid caching on iOS, which leads to 200
-                    // instead of 304 in result of the second request. (a similar issue is described in CB-8606, CB-10088)
-                    specContext.transfer.download(imageURL + "?q=" + lastModified.getTime(), specContext.localFilePath, function () {
-                        specContext.transfer.download(imageURL + "?q=" + (lastModified.getTime() + 1), specContext.localFilePath, httpWin, downloadFail, null,
-                        {
-                            headers: {
-                                "If-Modified-Since": lastModified.toUTCString()
-                            }
-                        });
-                    }, httpFail);
-                }, DOWNLOAD_TIMEOUT * 2);
+                    writeFile(specContext.root, specContext.fileName, 'Temp data', function () {
+                        specContext.transfer.download(SERVER + '/304', specContext.localFilePath, httpWin, downloadFail);
+                    }, fileOperationFail);
+                }, DOWNLOAD_TIMEOUT);
 
                 it("filetransfer.spec.36 should handle non-UTF8 encoded download response", function (done) {
 
@@ -1073,7 +1077,10 @@ exports.defineAutoTests = function () {
                         }, GRACE_TIME_DELTA);
                     };
 
-                    writeFile(specContext.root, specContext.fileName, new Array(200000).join("aborttest!"), fileWin, done);
+                    // windows store and ios are too fast, win is called before we have a chance to abort
+                    // so let's get them busy - while not providing an extra load to the slow Android emulators
+                    var arrayLength = ((isWindows && !isWindowsPhone81) || isIos) ? 3000000 : isIot ? 150000 : 200000;
+                    writeFile(specContext.root, specContext.fileName, new Array(arrayLength).join("aborttest!"), fileWin, done);
                 }, UPLOAD_TIMEOUT);
 
                 it("filetransfer.spec.22 should get http status and body on failure", function (done) {
@@ -1192,6 +1199,9 @@ exports.defineAutoTests = function () {
                         "CustomHeader1": "CustomValue1",
                         "CustomHeader2": ["CustomValue2", "CustomValue3"],
                     };
+
+                    // http://whatheaders.com does not support Transfer-Encoding: chunked
+                    this.uploadOptions.chunkedMode = false;
 
                     // NOTE: removing uploadOptions cause Android to timeout
                     this.transfer.upload(this.localFilePath, fileURL, uploadWin, uploadFail, this.uploadOptions);
@@ -1462,6 +1472,11 @@ exports.defineAutoTests = function () {
 
                 it("filetransfer.spec.41 should not fail to upload a file using data: source uri when the data is empty (non-multipart)", function (done) {
 
+                    if (isIos) {
+                        // iOS does not support uploads of an empty file with __chunkedMode=true__ and `multipartMode=false`:
+                        // request body will be empty in this case instead of 0\n\n.
+                        pending();
+                    }
                     var fileURL = SERVER + "/upload";
 
                     // Content-Type header disables multipart
@@ -1482,6 +1497,87 @@ exports.defineAutoTests = function () {
                     // NOTE: removing uploadOptions cause Android to timeout
                     this.transfer.upload(dataUri, fileURL, done, uploadFail, this.uploadOptions);
                 }, UPLOAD_TIMEOUT);
+
+                describe("chunkedMode handling", function() {
+                    var testChunkedModeWin = function (uploadResult, specContext) {
+                        var multipartModeEnabled = !(specContext.uploadOptions.headers && specContext.uploadOptions.headers["Content-Type"]);
+                        var obj = null;
+                        try {
+                            obj = JSON.parse(uploadResult.response);
+
+                            if (specContext.uploadOptions.chunkedMode) {
+                                if (!isIos) {
+                                    expect(obj["content-length"]).not.toBeDefined("Expected Content-Length not to be defined");
+                                }
+                                expect(obj["transfer-encoding"].toLowerCase()).toEqual("chunked");
+                            } else {
+                                expect(obj["content-length"]).toBeDefined("Expected Content-Length to be defined");
+                                expect(obj["transfer-encoding"].toLowerCase()).not.toEqual("chunked");
+                            }
+
+                            if (multipartModeEnabled) {
+                                expect(obj["content-type"].indexOf("multipart/form-data")).not.toBe(-1);
+                            } else {
+                                expect(obj["content-type"].indexOf("multipart/form-data")).toBe(-1);
+                            }
+                        } catch (e) {
+                            expect(obj).not.toBeNull("returned data from server should be valid json");
+                        }
+                    };
+
+                    var testChunkedModeBase = function(chunkedMode, multipart, done) {
+                        var fileURL = SERVER + "/upload_echo_headers";
+                        var specContext = this;
+
+                        specContext.uploadOptions.chunkedMode = chunkedMode;
+                        if (!multipart) {
+                            // Content-Type header disables multipart
+                            specContext.uploadOptions.headers = {
+                                "Content-Type": "text/plain"
+                            };
+                        }
+
+                        var uploadFail = function() {
+                            unexpectedCallbacks.httpFail();
+                            done();
+                        };
+
+                        // turn off the onprogress handler
+                        this.transfer.onprogress = function () {};
+
+                        // NOTE: removing uploadOptions cause Android to timeout
+                        specContext.transfer.upload(specContext.localFilePath, fileURL, function (uploadResult) {
+                            testChunkedModeWin(uploadResult, specContext);
+                            done();
+                        }, uploadFail, specContext.uploadOptions);
+                    };
+
+                    it("filetransfer.spec.42 chunkedMode=false, multipart=false", function (done) {
+
+                        testChunkedModeBase.call(this, false, false, done);
+                    }, UPLOAD_TIMEOUT);
+
+                    it("filetransfer.spec.43 chunkedMode=true, multipart=false", function (done) {
+
+                        if (isWindows) {
+                            pending();
+                        }
+                        testChunkedModeBase.call(this, true, false, done);
+                    }, UPLOAD_TIMEOUT);
+
+                    it("filetransfer.spec.44 chunkedMode=false, multipart=true", function (done) {
+
+                        testChunkedModeBase.call(this, false, true, done);
+                    }, UPLOAD_TIMEOUT);
+
+                    it("filetransfer.spec.45 chunkedMode=true, multipart=true", function (done) {
+
+                        if (isWindows) {
+                            pending();
+                        }
+                        testChunkedModeBase.call(this, true, true, done);
+                    }, UPLOAD_TIMEOUT);
+                });
             });
         });
     });

@@ -1,38 +1,97 @@
-<div class="view-payment">
-    <div class="section-title section-title-payment">
-        <h1>Payment</h1>
-    </div>
+<div class="view-payment view-main-section">
+  <a href="#" ui-sref="main.menu"><span ng-class="checkDevice()"></span></a>
+  <div id="container" class="content-container-profile content-scroll-container">
     <div class="content-padded">
         
-        <div class="addedcard">
+        <!-- <div class="addedcard">
 	        <div class="closelink">X</div>
 	        <img src="images/icon-visa.jpg" class="cardlogo">
 			<div class="cardcontent">
 				<h4>**** **** **** 1234</h4>
 				<p>EXP: 10/2016</p>
 			</div>
-        </div>
+        </div> -->
 
-        <h3>Add New Card</h3>
-        <label for="my-card-name">Name</label>
-        <input type="text" class="input-thick" placeholder="Full Name" id="my-card-name">
-        <label for="my-card-number">Card Number</label>
-        <input type="text" class="input-thick" placeholder="Card Number" id="my-card-number">
-        <div class="three_fields clearfix">
-	        <div class="three_field">
-		        <label for="my-expiry">Expiry</label>
-				<input type="text" class="input-thick" placeholder="Expiry" id="my-expiry">
-	        </div>
-	        <div class="three_field">
-		        <label for="my-cvc">CVC</label>
-				<input type="text" class="input-thick" placeholder="CVC" id="my-cvc">
-	        </div>
-	        <div class="three_field">
-		        <label for="my-zip">ZIP</label>
-				<input type="text" class="input-thick" placeholder="ZIP" id="my-zip">
-	        </div>
-        </div>
+      <h3>Add New Card</h3>
+      <form id="cc-form">
 
-        <button class="btn btn-primary btn-block">Add Card</button>
+  <div ng-click="focusField()" id="cc-number" class="form-group">
+    <label for="cc-number-field">Credit card number</label>
+    <div class="form-control-static">
+      <span class="fake-input"></span>
     </div>
+  </div>
+  <div id="cc-cvc" class="form-group">
+    <label for="cc-cvc-field">CVC</label>
+    <div ng-click="focusField()" class="form-control-static">
+      <span class="fake-input"></span>
+    </div>
+  </div>
+  <div id="cc-expiration-month" class="form-group">
+    <label for="cc-expiration-month-field">Expiration month</label>
+    <div class="form-control-static">
+      <span ng-click="focusField()" class="fake-input"></span>
+    </div>
+  </div>
+  <div id="cc-expiration-year" class="form-group">
+    <label ng-click="focusField()" for="cc-expiration-year-field">Expiration year</label>
+    <div class="form-control-static">
+      <span class="fake-input"></span>
+    </div>
+  </div>
+
+  <div id="cc-line1" class="form-group">
+    <label for="cc-line1-field">Street Address Line 1</label>
+    <div class="form-control-static">
+      <input type="text" name="tag" id="line1">
+    </div>
+  </div>
+
+  <div id="cc-line2" class="form-group">
+    <label for="cc-line2-field">Street Address Line 2</label>
+    <div class="form-control-static">
+      <input type="text" name="tag" id="line2">
+    </div>
+  </div>
+
+  <div id="cc-city" class="form-group">
+    <label for="cc-city-field">City</label>
+    <div class="form-control-static">
+      <input type="text" name="tag" id="city">
+    </div>
+  </div>
+
+  <div id="cc-region" class="form-group">
+    <label for="cc-region-field">State</label>
+    <div class="form-control-static">
+      <input type="text" name="tag" id="region">
+    </div>
+  </div>
+
+  <div id="cc-postalcode" class="form-group">
+    <label for="cc-postalcode-field">Zip Code</label>
+    <div class="form-control-static">
+      <input type="text" name="tag" id="postalcode">
+    </div>
+  </div>
+
+  <div id="cc-country" class="form-group">
+    <label for="cc-country-field">Country</label>
+    <div class="form-control-static">
+      <input type="text" name="tag" id="country">
+    </div>
+  </div>
+
+  <div id="cc-tag" class="form-group">
+    <label for="cc-tag-field">Unsecure Field</label>
+    <div class="form-control-static">
+      <input type="text" name="tag" id="unsecure-field">
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-info">Submit</button>
+</form>
+
+    </div>
+  </div>
 </div>

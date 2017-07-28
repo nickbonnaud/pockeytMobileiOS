@@ -21,11 +21,27 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
-    <string>0.1.8</string>
+    <string>1.0.0</string>
     <key>CFBundleSignature</key>
     <string>????</string>
     <key>CFBundleURLTypes</key>
     <array>
+      <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>prefs</string>
+        </array>
+      </dict>
+      <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>${PRODUCT_BUNDLE_IDENTIFIER}.payments</string>
+        </array>
+      </dict>
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
@@ -42,7 +58,15 @@
       </dict>
     </array>
     <key>CFBundleVersion</key>
-    <string>0.1.8</string>
+    <string>1.0.0</string>
+    <key>FacebookAppID</key>
+    <string>178327975910603</string>
+    <key>FacebookDisplayName</key>
+    <string>Pockeyt</string>
+    <key>GCM_SENDER_ID</key>
+    <string>906488292868</string>
+    <key>IS_GCM_ENABLED</key>
+    <true/>
     <key>LSApplicationQueriesSchemes</key>
     <array>
       <string>fbapi</string>
@@ -76,10 +100,22 @@
       <key>NSAllowsArbitraryLoads</key>
       <true/>
     </dict>
-    <key>NSMainNibFile</key>
+    <key>NSCameraUsageDescription</key>
+    <string>Add profile picture to Pockeyt</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Background location-tracking is required</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
     <string/>
-    <key>NSMainNibFile~ipad</key>
-    <string/>
+    <key>NSMotionUsageDescription</key>
+    <string>Using the accelerometer increases battery-efficiency by intelligently toggling location-tracking only when the device is detected to be moving</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Choose profile picture for Pockeyt</string>
+    <key>UIBackgroundModes</key>
+    <array>
+      <string>fetch</string>
+      <string>location</string>
+      <string>remote-notification</string>
+    </array>
     <key>UIInterfaceOrientation</key>
     <array>
       <string>UIInterfaceOrientationPortrait</string>
@@ -96,12 +132,6 @@
       <string>UIInterfaceOrientationPortrait</string>
       <string>UIInterfaceOrientationPortraitUpsideDown</string>
     </array>
-    <key>FacebookAppID</key>
-    <string>178327975910603</string>
-    <key>FacebookDisplayName</key>
-    <string>Pockeyt</string>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string/>
     <key>branch_key</key>
     <string>key_live_nfeWAeQnq5g7CFYAOpeK4mhkzDkzno9K</string>
   </dict>
